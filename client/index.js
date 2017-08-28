@@ -1,29 +1,25 @@
-import {createStore, combineReducers} from "redux";
+import {createStore,applyMiddleware} from "redux";
 
-const userReducer = (state={}, action)=>{
-	switch(action.type){
-		case "CHANGE_NAME":
-			//Object.assign({},state,{name:action.payload});
-			state = {...state, name:action.payload};//spread transform.
-			break;
-		case "CHANGE_AGE":
-			state = {...state, age:action.payload};
-			break;
-	}
-	return state;
-};
-const tweetsReducer = (state=[],action)=>{
-	//Will not act on the user state data
-	//One action can trigger multiple reducers that are decoupled from each other.
-	return state;
-	//failing to return will cause undefined error
-};
-const reducers = combineReducers({
-	user: userReducer,
-	tweets: tweetsReducer
-});
-const store = createStore(reducers);
-//createStore should always have reducer
+const reducer = function(initialState=0, action){
+    //working on the action dispatch, create an immutable state object
+    if(action.type=='INC'){
+        return initialState+action.payload;//state is an integer
+    }
+    if(action.type=='DEC'){
+        return initialState-action.payload;
+    }
+    console.log("initial state is",initialState);
+    return initialState;
+}
+const logger = (store)=>(next)=>(action)=>{
+	//middleware - Handler to the action, before calling the reducer. we can intercept the action and change it / cancel it.
+	console.log("action fired", action);
+	// action.type = "DEC";
+	next(action);//triggers the next middleware, if we are not including this, we are simply terminating the redux dispatch action.
+
+}
+
+const store = createStore(reducer,1, applyMiddleware(logger));//createStore should always have reducer and the initial state of application
 
 
 //subscribe to changes of action
@@ -31,8 +27,8 @@ store.subscribe(()=>{
 	 console.log("store changed", store.getState());
 });
 
-store.dispatch({type:"CHANGE_NAME", payload:"Siva"});
-store.dispatch({type:"CHANGE_AGE", payload:25});
-store.dispatch({type:"CHANGE_AGE", payload:20});
-
-
+store.dispatch({type:"INC", payload:1});
+store.dispatch({type:"INC", payload:2});
+store.dispatch({type:"INC", payload:3});
+store.dispatch({type:"DEC", payload:100});
+store.dispatch({type:"INC", payload:400});
