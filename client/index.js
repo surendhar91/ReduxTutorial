@@ -8,6 +8,9 @@ const reducer = function(initialState=0, action){
     if(action.type=='DEC'){
         return initialState-action.payload;
     }
+    if(action.type=='E'){
+    	throw new Error("Error thrown..!!@");
+	}
     console.log("initial state is",initialState);
     return initialState;
 }
@@ -18,8 +21,15 @@ const logger = (store)=>(next)=>(action)=>{
 	next(action);//triggers the next middleware, if we are not including this, we are simply terminating the redux dispatch action.
 
 }
+const errorHandler = (store)=>(next)=>(action)=>{
+    try{
+        next(action);
+    }catch(e){
+        console.log("Exception !!",e);
+    }
+}
+const store = createStore(reducer,1, applyMiddleware(logger,errorHandler));//createStore should always have reducer and the initial state of application
 
-const store = createStore(reducer,1, applyMiddleware(logger));//createStore should always have reducer and the initial state of application
 
 
 //subscribe to changes of action
@@ -32,3 +42,4 @@ store.dispatch({type:"INC", payload:2});
 store.dispatch({type:"INC", payload:3});
 store.dispatch({type:"DEC", payload:100});
 store.dispatch({type:"INC", payload:400});
+store.dispatch({type:"E"});
