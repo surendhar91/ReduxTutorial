@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "html-webpack-plugin": "^2.30.1",
     "path": "^0.12.7",
     "redux": "^3.7.2",

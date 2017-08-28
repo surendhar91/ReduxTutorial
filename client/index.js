@@ -3,15 +3,18 @@ import {createStore, combineReducers} from "redux";
 const userReducer = (state={}, action)=>{
 	switch(action.type){
 		case "CHANGE_NAME":
-			state.name = action.payload;
+			//Object.assign({},state,{name:action.payload});
+			state = {...state, name:action.payload};//spread transform.
 			break;
 		case "CHANGE_AGE":
-			state.age = action.payload;
+			state = {...state, age:action.payload};
 			break;
 	}
 	return state;
 };
 const tweetsReducer = (state=[],action)=>{
+	//Will not act on the user state data
+	//One action can trigger multiple reducers that are decoupled from each other.
 	return state;
 	//failing to return will cause undefined error
 };
@@ -30,4 +33,6 @@ store.subscribe(()=>{
 
 store.dispatch({type:"CHANGE_NAME", payload:"Siva"});
 store.dispatch({type:"CHANGE_AGE", payload:25});
+store.dispatch({type:"CHANGE_AGE", payload:20});
+
 
