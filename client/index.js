@@ -1,27 +1,31 @@
-import {createStore} from "redux";
+import {createStore, combineReducers} from "redux";
 
-const reducer = function(state, action){
-	//working on the action dispatch, create an immutable state object
-	if(action.type=='INC'){
-		return state+action.payload;//state is an integer
-	}
-	if(action.type=='DEC'){
-		return state-action.payload;
-	}
+const userReducer = (state=null, action)=>{
 	return state;
-}
-
-const store = createStore(reducer,0);//createStore should always have reducer and the initial state of application
+};
+const tweetsReducer = (state=null,action)=>{
+	return state;
+	//failing to return will cause undefined error
+};
+const reducers = combineReducers({
+	user: userReducer,//this reducer can able to work with only the user object
+	tweets: tweetsReducer
+});
+const store = createStore(reducers,
+	{
+		user:{
+			name:"Suren",
+			age: 25
+		},
+		tweets:[]
+	}
+);//createStore should always have reducer and the initial state of application
 
 
 //subscribe to changes of action
 store.subscribe(()=>{
-	console.log(store);
-	console.log("store changed", store.getState());
-})
+	 console.log("store changed", store.getState());
+});
 
 store.dispatch({type:"INC", payload:1});
-store.dispatch({type:"INC", payload:2});
-store.dispatch({type:"INC", payload:3});
-store.dispatch({type:"DEC", payload:100});
-store.dispatch({type:"INC", payload:400});
+
