@@ -1,3 +1,4 @@
+/*
 import {createStore,applyMiddleware} from "redux";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
@@ -45,4 +46,4 @@ store.dispatch((dispatch)=>{
     ).catch((err)=>{
         dispatch({type:"FETCH_USERS_ERROR", command:err});
     })
-});
+});*/

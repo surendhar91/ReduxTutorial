@@ -10,7 +10,8 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 })
 module.exports = {
   entry: {
-    index:'./client/index.js'
+      index:'./client/index.js',
+      client:'./client/client.js'
   },
   output: {
     path: path.resolve('dist'),
