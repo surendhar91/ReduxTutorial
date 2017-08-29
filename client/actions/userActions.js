@@ -1,16 +1,11 @@
 import axios from "axios"
 export function fetchUsers(){
-    return (dispatch)=>{
-        dispatch({type:"FETCH_USERS_START"});
-        //Make an asynchronous call
-        axios.get("http://rest.learncode.academy/api/wstern/users").then(
-            (response)=>{
-                dispatch({type:"RECEIVE_USERS", command: response.data});
-            }
-        ).catch((err)=>{
-            dispatch({type:"FETCH_USERS_ERROR", command:err});
-        })
+    return {
+        type: "FETCH_USERS",
+        payload:axios.get("http://rest.learncodsere.academy/api/wstern/users")
     }
+    //promise middleware will notice that we have dispatched a command (of promise type - action/function), it will automatically
+    // send through default messages for us.
 }
 export function setUserName(name){
     return {
